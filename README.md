@@ -12,12 +12,12 @@ Clean Code e cada teste novo tem o seu próprio commit, a partir do commit
 
 | Integrante | RM | Turma |
 |---|---|---|
-| Fabrício Cardoso de Oliveira | 561827 | _(preencher)_ |
-| Leonardo Luster Gomes | 564448 | _(preencher)_ |
-| Nelson Troccoli Santos Neto | 562815 | _(preencher)_ |
-| Pedro Luis Tofoli | 564441 | _(preencher)_ |
-| Raphael Talarico Nascimento Silva | 565219 | _(preencher)_ |
-| Vinicius Barbosa Gomes | 564854 | _(preencher)_ |
+| Fabrício Cardoso de Oliveira | 561827 | 2CCPG |
+| Leonardo Luster Gomes | 564448 | 2CCPG |
+| Nelson Troccoli Santos Neto | 562815 | 2CCPG |
+| Pedro Luis Tofoli | 564441 | 2CCPG |
+| Raphael Talarico Nascimento Silva | 565219 | 2CCPG |
+| Vinicius Barbosa Gomes | 564854 | 2CCPG |
 
 | Campo | |
 |---|---|
