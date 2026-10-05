@@ -14,14 +14,17 @@ public class GeradorProtocolo {
         System.out.println("GeradorProtocolo criado!");
     }
 
-    public static GeradorProtocolo getInstancia() {
+    // synchronized: duas requisicoes simultaneas nao criam duas instancias
+    public static synchronized GeradorProtocolo getInstancia() {
         if (instancia == null) {
             instancia = new GeradorProtocolo();
         }
         return instancia;
     }
 
-    public int proximo() {
+    // synchronized: contador++ nao e atomico, sem isso dois atendimentos
+    // podem receber o mesmo protocolo
+    public synchronized int proximo() {
         contador++;
         return contador;
     }
