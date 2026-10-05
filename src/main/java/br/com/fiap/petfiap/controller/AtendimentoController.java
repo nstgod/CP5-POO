@@ -10,6 +10,7 @@ import br.com.fiap.petfiap.service.AgendaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -43,9 +44,9 @@ public class AtendimentoController {
                     .construir(protocolo);
             return ResponseEntity.status(HttpStatus.CREATED).body(service.agendar(atendimento));
         } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().build();
+            return recusar(HttpStatus.BAD_REQUEST, e);
         } catch (HorarioOcupadoException e) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).build();
+            return recusar(HttpStatus.CONFLICT, e);
         }
     }
 
@@ -55,7 +56,7 @@ public class AtendimentoController {
         try {
             return ResponseEntity.ok(service.buscarPorId(id));
         } catch (AtendimentoNaoEncontradoException e) {
-            return ResponseEntity.notFound().build();
+            return recusar(HttpStatus.NOT_FOUND, e);
         }
     }
 
@@ -76,7 +77,7 @@ public class AtendimentoController {
                     "pontosFidelidade", atendimento.calcularPontosFidelidade(),
                     "duracaoMinutos", atendimento.getDuracaoMinutos()));
         } catch (AtendimentoNaoEncontradoException e) {
-            return ResponseEntity.notFound().build();
+            return recusar(HttpStatus.NOT_FOUND, e);
         }
     }
 
@@ -86,9 +87,9 @@ public class AtendimentoController {
         try {
             return ResponseEntity.ok(service.concluir(id));
         } catch (AtendimentoNaoEncontradoException e) {
-            return ResponseEntity.notFound().build();
+            return recusar(HttpStatus.NOT_FOUND, e);
         } catch (StatusInvalidoException e) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).build();
+            return recusar(HttpStatus.CONFLICT, e);
         }
     }
 
@@ -98,9 +99,15 @@ public class AtendimentoController {
         try {
             return ResponseEntity.ok(service.cancelar(id));
         } catch (AtendimentoNaoEncontradoException e) {
-            return ResponseEntity.notFound().build();
+            return recusar(HttpStatus.NOT_FOUND, e);
         } catch (StatusInvalidoException e) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).build();
+            return recusar(HttpStatus.CONFLICT, e);
         }
+    }
+
+    // Recusa devolvendo o motivo (a mensagem da excecao) no corpo, no formato
+    // ProblemDetail do Spring: o cliente sabe POR QUE a requisicao foi recusada.
+    private <T> ResponseEntity<T> recusar(HttpStatus status, RuntimeException e) {
+        return ResponseEntity.of(ProblemDetail.forStatusAndDetail(status, e.getMessage())).build();
     }
 }
