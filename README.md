@@ -8,7 +8,7 @@ Clean Code e cada teste novo tem o seu próprio commit, a partir do commit
 
 ## Identificação
 
-**Grupo:** _(preencher)_
+**Grupo:** 23
 
 | Integrante | RM | Turma |
 |---|---|---|
