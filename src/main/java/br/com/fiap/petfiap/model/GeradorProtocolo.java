@@ -11,7 +11,6 @@ public class GeradorProtocolo {
 
     private GeradorProtocolo() {
         contador = 0;
-        System.out.println("GeradorProtocolo criado!");
     }
 
     // synchronized: duas requisicoes simultaneas nao criam duas instancias
