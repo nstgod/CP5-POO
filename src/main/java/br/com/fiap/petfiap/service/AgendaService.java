@@ -27,10 +27,9 @@ public class AgendaService {
         if (novo.getDataHora().isBefore(LocalDateTime.now())) {
             throw new IllegalArgumentException("Nao e possivel agendar no passado: " + novo.getDataHora());
         }
-        List<Atendimento> doPet = repository.findByPetNome(novo.getPetNome());
-        for (Atendimento a : doPet) {
-            if (a.getPetNome().equals(novo.getPetNome()) && a.getDataHora().equals(novo.getDataHora())
-                    && Atendimento.STATUS_AGENDADO.equals(a.getStatus())) {
+        List<Atendimento> atendimentosDoPet = repository.findByPetNome(novo.getPetNome());
+        for (Atendimento existente : atendimentosDoPet) {
+            if (ocupaMesmoHorario(existente, novo)) {
                 throw new HorarioOcupadoException(
                         "Pet " + novo.getPetNome() + " ja possui atendimento agendado nesse horario");
             }
@@ -39,6 +38,13 @@ public class AgendaService {
         log.info("Recibo: atendimento {} agendado para {} (tutor {})",
                 salvo.getProtocolo(), salvo.getPetNome(), salvo.getTutorNome());
         return salvo;
+    }
+
+    // Conflito: mesmo pet, mesma data/hora e o atendimento existente ainda AGENDADO.
+    private boolean ocupaMesmoHorario(Atendimento existente, Atendimento novo) {
+        return existente.getPetNome().equals(novo.getPetNome())
+                && existente.getDataHora().equals(novo.getDataHora())
+                && Atendimento.STATUS_AGENDADO.equals(existente.getStatus());
     }
 
     // Busca pelo id; nunca retorna null, o orElseThrow garante a excecao.
