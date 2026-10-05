@@ -36,9 +36,17 @@ public class AtendimentoBuilder {
         return this;
     }
 
-    // A validacao dos campos obrigatorios fica por conta do controller,
-    // que conhece a regra de negocio do PetFiap.
+    // O objeto so nasce valido: a validacao dos campos obrigatorios fica
+    // concentrada aqui, antes de a factory criar o atendimento.
     public Atendimento construir(int protocolo) {
+        validarObrigatorio(petNome, "Nome do pet");
+        validarObrigatorio(petPorte, "Porte do pet");
         return AtendimentoFactory.criar(protocolo, tipo, petNome, petPorte, tutorNome, dataHora);
+    }
+
+    private void validarObrigatorio(String valor, String campo) {
+        if (valor == null || valor.isBlank()) {
+            throw new IllegalArgumentException(campo + " e obrigatorio");
+        }
     }
 }
