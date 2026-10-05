@@ -4,3 +4,9 @@ bin/
 .settings/
 .classpath
 .project
+
+# IntelliJ IDEA / VS Code
+.idea/
+*.iml
+out/
+.vscode/
